@@ -16,7 +16,7 @@
         <module>adapter-dubbo</module>
         <module>adapter-rocketmq</module>
         <module>adapter-hystrix</module>
-        <module>adapter-grpc</module>
+<!--        <module>adapter-grpc</module>-->
         <module>adapter-motan</module>
         <module>adapter-okhttp3</module>
         <module>adapter-brpc</module>
