@@ -39,11 +39,13 @@ import org.dromara.dynamictp.core.executor.DtpExecutor;
 import org.dromara.dynamictp.core.notifier.manager.NoticeManager;
 import org.dromara.dynamictp.core.notifier.manager.NotifyHelper;
 import org.dromara.dynamictp.core.reject.RejectHandlerGetter;
+import org.dromara.dynamictp.core.spring.DtpPostProcessor;
 import org.dromara.dynamictp.core.support.ExecutorAdapter;
 import org.dromara.dynamictp.core.support.ExecutorWrapper;
 import org.dromara.dynamictp.core.support.task.wrapper.TaskWrapper;
 import org.dromara.dynamictp.core.support.task.wrapper.TaskWrappers;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.Collections;
 import java.util.List;
@@ -52,6 +54,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 
 import static org.dromara.dynamictp.common.constant.DynamicTpConst.M_1;
@@ -107,8 +111,23 @@ public class DtpRegistry extends OnceApplicationContextEventListener {
      * @param source  the source of the call to register method
      */
     public static void registerExecutor(ExecutorWrapper wrapper, String source) {
-        log.info("DynamicTp register executor: {}, source: {}", ExecutorConverter.toMainFields(wrapper), source);
         EXECUTOR_REGISTRY.putIfAbsent(wrapper.getThreadPoolName(), wrapper);
+    }
+
+    public static void registerExecutor(ThreadPoolExecutor executor, String executorName) {
+        DtpPostProcessor.doRegisterAndReturnCommon(executor, executorName);
+    }
+
+    public static void registerExecutor(ScheduledThreadPoolExecutor executor, String executorName) {
+        DtpPostProcessor.doRegisterAndReturnCommon(executor, executorName);
+    }
+
+    public static void registerExecutor(ThreadPoolTaskExecutor executor, String executorName) {
+        DtpPostProcessor.doRegisterAndReturnCommon(executor, executorName);
+    }
+
+    public static void removeExecutor(String executorName) {
+        EXECUTOR_REGISTRY.remove(executorName);
     }
 
     /**

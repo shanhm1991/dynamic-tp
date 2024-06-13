@@ -140,7 +140,7 @@ public class DtpPostProcessor implements BeanPostProcessor, BeanFactoryAware, Pr
         return doRegisterAndReturnCommon(bean, poolName);
     }
 
-    private Object doRegisterAndReturnCommon(Object bean, String poolName) {
+    public static Object doRegisterAndReturnCommon(Object bean, String poolName) {
         if (bean instanceof ThreadPoolTaskExecutor) {
             ThreadPoolTaskExecutor poolTaskExecutor = (ThreadPoolTaskExecutor) bean;
             val proxy = newProxy(poolName, poolTaskExecutor.getThreadPoolExecutor());
@@ -171,19 +171,19 @@ public class DtpPostProcessor implements BeanPostProcessor, BeanFactoryAware, Pr
         return Ordered.HIGHEST_PRECEDENCE;
     }
 
-    private ThreadPoolExecutorProxy newProxy(String name, ThreadPoolExecutor originExecutor) {
+    private static ThreadPoolExecutorProxy newProxy(String name, ThreadPoolExecutor originExecutor) {
         val proxy = new ThreadPoolExecutorProxy(originExecutor);
         shutdownGracefulAsync(originExecutor, name, 0);
         return proxy;
     }
 
-    private ScheduledThreadPoolExecutorProxy newScheduledTpProxy(String name, ScheduledThreadPoolExecutor originExecutor) {
+    private static ScheduledThreadPoolExecutorProxy newScheduledTpProxy(String name, ScheduledThreadPoolExecutor originExecutor) {
         val proxy = new ScheduledThreadPoolExecutorProxy(originExecutor);
         shutdownGracefulAsync(originExecutor, name, 0);
         return proxy;
     }
 
-    private void tryWrapTaskDecorator(ThreadPoolTaskExecutor poolTaskExecutor, ThreadPoolExecutorProxy proxy) throws IllegalAccessException {
+    private static void tryWrapTaskDecorator(ThreadPoolTaskExecutor poolTaskExecutor, ThreadPoolExecutorProxy proxy) throws IllegalAccessException {
         Object taskDecorator = ReflectionUtil.getFieldValue("taskDecorator", poolTaskExecutor);
         if (Objects.isNull(taskDecorator)) {
             return;
