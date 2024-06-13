@@ -25,12 +25,10 @@
         <commons-collections4.version>4.4</commons-collections4.version>
 
         <maven-flatten.version>1.3.0</maven-flatten.version>
-        <maven-checkstyle-plugin.verion>3.1.0</maven-checkstyle-plugin.verion>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-source-plugin.version>2.4</maven-source-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.7</nexus-staging-maven-plugin.version>
         <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
-        <maven-checkstyle-plugin.version>3.1.0</maven-checkstyle-plugin.version>
 
         <cglib.version>3.3.0</cglib.version>
     </properties>
@@ -143,45 +141,24 @@
     </issueManagement>
 
     <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
         <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>cowave</id>
+            <name>releases</name>
+            <url>http://10.64.4.74:8081/repository/maven-releases/</url>
+            <uniqueVersion>true</uniqueVersion>
         </repository>
+        <snapshotRepository>
+            <id>cowave</id>
+            <name>snapshots</name>
+            <url>http://10.64.4.74:8081/repository/maven-snapshots/</url>
+            <uniqueVersion>true</uniqueVersion>
+        </snapshotRepository>
     </distributionManagement>
 
     <build>
         <pluginManagement>
             <plugins>
-                <!-- 公共checkstyle标准配置，可以在子模块中覆盖，修改自定义选项 -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>${maven-checkstyle-plugin.verion}</version>
-                    <configuration>
-                        <configLocation>.github/checkstyle/checkstyle.xml</configLocation>
-                        <includeTestSourceDirectory>false</includeTestSourceDirectory>
-                        <consoleOutput>true</consoleOutput>
-                        <encoding>UTF-8</encoding>
-                        <skip>false</skip>
-                        <!--这里是说当前这个配置是什么错误级别。如果配置的是error，那么扫描到不符合条件的，就是打印error。checkstyle里允许的错误级别有error, warning, info. -->
-                        <violationSeverity>error</violationSeverity>
-                        <!-- 是否打断命令执行，错误的时候会停止。否则，错误会生成报告，但不会阻止命令执行。 -->
-                        <failsOnError>false</failsOnError>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>validate</id>
-                            <phase>validate</phase>
-                            <goals>
-                                <goal>checkstyle</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
+
             </plugins>
         </pluginManagement>
 
@@ -246,10 +223,6 @@
             <!--所有子模块都要执行的plugin-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>${maven-site-plugin.version}</version>
             </plugin>
@@ -285,18 +258,7 @@
 
     <reporting>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${maven-checkstyle-plugin.version}</version>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>checkstyle</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
+
         </plugins>
     </reporting>
 </project>

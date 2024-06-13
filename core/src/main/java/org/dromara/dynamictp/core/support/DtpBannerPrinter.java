@@ -48,7 +48,7 @@ public class DtpBannerPrinter implements EnvironmentAware {
     @Override
     public void setEnvironment(Environment environment) {
         boolean enable = environment.getProperty(DynamicTpConst.BANNER_ENABLED_PROP,
-                boolean.class, true);
+                boolean.class, false);
         if (enable) {
             log.info(BANNER + "\n" + NAME + "\n :: " + VersionUtil.getVersion() + " :: \n" + SITE + "\n");
         }

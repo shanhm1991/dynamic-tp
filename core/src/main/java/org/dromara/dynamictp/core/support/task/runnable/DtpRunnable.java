@@ -39,16 +39,19 @@ public class DtpRunnable implements Runnable {
 
     private final String traceId;
 
+    private final String requestId;
+
     public DtpRunnable(Runnable originRunnable, Runnable runnable, String taskName) {
         this.originRunnable = originRunnable;
         this.runnable = runnable;
         this.taskName = taskName;
         this.traceId = MDC.get(TRACE_ID);
+        this.requestId = MDC.get("rid");
     }
 
     @Override
     public void run() {
+        MDC.put("rid", requestId);
         runnable.run();
     }
-
 }

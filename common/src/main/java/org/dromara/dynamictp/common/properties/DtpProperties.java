@@ -50,7 +50,7 @@ public class DtpProperties {
     /**
      * If print banner.
      */
-    private boolean enabledBanner = true;
+    private boolean enabledBanner = false;
 
     /**
      * If enabled metrics collect.
@@ -58,7 +58,7 @@ public class DtpProperties {
     private boolean enabledCollect = true;
 
     /**
-     * Metrics collector types, default is logging.
+     * Metrics collector types
      */
     private List<String> collectorTypes = Lists.newArrayList(CollectorTypeEnum.MICROMETER.name());
 
@@ -161,7 +161,7 @@ public class DtpProperties {
      * Rabbitmq thread pools.
      */
     private List<TpExecutorProps> rabbitmqTp;
-    
+
     public static DtpProperties getInstance() {
         return Holder.INSTANCE;
     }
@@ -200,7 +200,7 @@ public class DtpProperties {
 
         private String key;
     }
-    
+
     private static class Holder {
         private static final DtpProperties INSTANCE = new DtpProperties();
     }
