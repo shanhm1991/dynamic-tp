@@ -149,7 +149,7 @@ public class DtpPostProcessor implements BeanPostProcessor, BeanFactoryAware, Pr
                 tryWrapTaskDecorator(poolTaskExecutor, proxy);
             } catch (IllegalAccessException ignored) { }
             DtpRegistry.registerExecutor(new ExecutorWrapper(poolName, proxy), REGISTER_SOURCE);
-            return bean;
+            return proxy;
         }
         Executor proxy;
         if (bean instanceof ScheduledThreadPoolExecutor) {
