@@ -20,6 +20,8 @@ package org.dromara.dynamictp.core.support.task.runnable;
 import lombok.Getter;
 import org.slf4j.MDC;
 
+import java.util.Map;
+
 import static org.dromara.dynamictp.common.constant.DynamicTpConst.TRACE_ID;
 
 /**
@@ -39,19 +41,21 @@ public class DtpRunnable implements Runnable {
 
     private final String traceId;
 
-    private final String requestId;
+    private final Map<String, String> mdcContext;
 
     public DtpRunnable(Runnable originRunnable, Runnable runnable, String taskName) {
         this.originRunnable = originRunnable;
         this.runnable = runnable;
         this.taskName = taskName;
         this.traceId = MDC.get(TRACE_ID);
-        this.requestId = MDC.get("rid");
+        this.mdcContext = MDC.getCopyOfContextMap();
     }
 
     @Override
     public void run() {
-        MDC.put("rid", requestId);
+        if(mdcContext != null){
+            MDC.setContextMap(mdcContext);
+        }
         runnable.run();
     }
 }
